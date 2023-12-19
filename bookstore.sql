@@ -41,3 +41,13 @@ CREATE TABLE user (
   isAdmin boolean DEFAULT FALSE,
   PRIMARY KEY (user_id)  
 );
+
+
+INSERT INTO user (name, email, password, address, phone, isAdmin) 
+VALUES 
+  ('Hoàng Long', 'longhoang', 'password123', 'Tây Hồ', '123-456-7890', FALSE),
+  ('Minh Huyền', 'huyen', 'pass456', 'Hà Đông', '987-654-3210', FALSE),
+  ('Admin', 'project1', 'soict', 'Hai Bà Trưng', '555-123-4567', TRUE);
+
+
+
