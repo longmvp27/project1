@@ -60,20 +60,14 @@ exports.updateBook = async (req, res) => {
       });
     }
 
-    if (req.user.role == "admin") {
-      await book.update({ ...req.body });
-      return res.status(200).json({
-        status: "success",
-        data: {
-          book,
-        },
-      });
-    }
-
-    return res.status(400).json({
-      status: "fail",
-      message: "Can not update book because the user is not admin",
+    await book.update({ ...req.body });
+    return res.status(200).json({
+      status: "success",
+      data: {
+        book,
+      },
     });
+    
   } catch (error) {
     return res.status(400).json({
       status: "fail",
@@ -92,21 +86,13 @@ exports.deleteBook = async (req, res) => {
           message: "No book found with that ID",
         });
       }
-  
-      // console.log(req.user);
-  
-      if (req.user.role == "admin") {
-        await book.destroy();
-        return res.status(204).json({
-          status: "success",
-          data: null,
-        });
-      }
-  
-      return res.status(400).json({
-        status: "fail",
-        message: "Can not delete book because the user is not admin",
+
+      await book.destroy();
+      return res.status(204).json({
+        status: "success",
+        data: null,
       });
+
     } catch (error) {
       return res.status(400).json({
         status: "fail",

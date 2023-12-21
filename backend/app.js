@@ -6,6 +6,7 @@ require("./models/index");
 const userRouter = require("./routes/userRoutes");
 const bookRouter = require("./routes/bookRoutes");
 const genreRouter = require("./routes/genreRoutes");
+const saleRouter = require("./routes/saleRoutes");
 
 
 dotenv.config({
@@ -22,6 +23,7 @@ app.use(express.static(`${__dirname}/public`));
 app.use("/users", userRouter);
 app.use("/books", bookRouter);
 app.use("/genres", genreRouter);
+app.use("/sales", saleRouter);
 
 
 app.all("*", (req, res, next) => {
