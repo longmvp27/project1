@@ -131,20 +131,16 @@ exports.getBooksByGenre = async (req, res) => {
       });
     }
 
-    // Find books associated with the selected genre
-    const books = await Book.findAll({
-      include: [
-        {
-          model: Genre,
-          through: {
-            model: BookGenre,
-            where: { genre_id: selectedGenre.id }, // Use the ID of the selected genre
-          },
-          where: { name: genre }, // Filter by genre name
-        },
-      ],
-    });
+    // Find bookGenre 
+    const selectedBookGenres = await BookGenre.findAll({ where: { genre_id: selectedGenre.id } });
+    const bookIds = selectedBookGenres.map(bookGenre => bookGenre.book_id);
 
+    // Find books associated with the selected genre
+
+    const books = await Book.findAll({
+      where: { id: bookIds }    
+    });
+  
     res.status(200).json({
       status: 'success',
       data: {
