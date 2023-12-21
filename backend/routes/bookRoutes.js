@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get("/", bookController.getAllBooks);
 
-router.get("/bestsellers", bookController.getBestsellerBooks);
+router.get("/bestseller", bookController.getBestsellerBooks);
 
 router.post(
     "/",
@@ -29,7 +29,6 @@ router.patch(
     authController.restrictTo("admin"),
     bookController.updateBook
 );
-
 
 router.get("/genre", bookController.getBooksByGenre);
 

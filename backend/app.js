@@ -5,6 +5,8 @@ const app = express();
 require("./models/index");
 const userRouter = require("./routes/userRoutes");
 const bookRouter = require("./routes/bookRoutes");
+const genreRouter = require("./routes/genreRoutes");
+
 
 dotenv.config({
   path: "./config.env",
@@ -19,6 +21,8 @@ app.use(express.static(`${__dirname}/public`));
 // Declare all routes using in app
 app.use("/users", userRouter);
 app.use("/books", bookRouter);
+app.use("/genres", genreRouter);
+
 
 app.all("*", (req, res, next) => {
   res.status(404).json({

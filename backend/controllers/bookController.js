@@ -156,7 +156,7 @@ exports.getBooksByGenre = async (req, res) => {
   }
 };
 
-
+// See bestseller books
 exports.getBestsellerBooks = async (req, res) => {
   try {
     const bestsellingBooks = await SaleDetail.findAll({

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 21, 2023 at 06:09 AM
+-- Generation Time: Dec 21, 2023 at 08:16 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -32,6 +32,25 @@ CREATE TABLE `bookgenres` (
   `book_id` int(11) NOT NULL,
   `genre_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `bookgenres`
+--
+
+INSERT INTO `bookgenres` (`id`, `book_id`, `genre_id`) VALUES
+(1, 1, 1),
+(2, 2, 2),
+(3, 3, 4),
+(4, 4, 5),
+(5, 5, 3),
+(6, 6, 5),
+(7, 7, 2),
+(8, 8, 4),
+(9, 9, 5),
+(10, 10, 2),
+(11, 11, 1),
+(12, 12, 4),
+(13, 13, 2);
 
 -- --------------------------------------------------------
 
@@ -195,7 +214,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `bookgenres`
 --
 ALTER TABLE `bookgenres`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `books`
