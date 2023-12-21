@@ -11,7 +11,7 @@ const {
 exports.getAllBooks = async (req, res) => {
     try {
         const books = await Book.findAll();
-        // console.log(coffees);
+        // console.log(books);
         return res.status(200).json({
           status: "success",
           results: books.length,
@@ -22,8 +22,139 @@ exports.getAllBooks = async (req, res) => {
     } catch (error) {
       return res.status(400).json({
         status: "fail",
-        message: "Get all coffees fail...",
+        message: "Get all books fail...",
       });
     }
   };
 
+exports.createBook = async (req, res) => {
+    try { 
+      const newBook = await Book.create({
+        ...req.body,
+        posted_user: req.user.id,
+      });
+  
+      return res.status(201).json({
+        status: "success",
+        data: {
+          book: newBook,
+        },
+      });
+    } catch (error) {
+      return res.status(400).json({
+        status: "fail",
+        error: error.errors[0].message,
+      });
+    }
+};
+
+exports.updateBook = async (req, res) => {
+  try {
+    const book = await Book.findOne({ where: { id: req.params.id } });
+    if (!book) {
+      return res.status(404).json({
+        status: "fail",
+        message: "No book found with that ID",
+      });
+    }
+
+    if (req.user.role == "admin") {
+      await book.update({ ...req.body });
+      return res.status(200).json({
+        status: "success",
+        data: {
+          book,
+        },
+      });
+    }
+
+    return res.status(400).json({
+      status: "fail",
+      message: "Can not update book because the user is not admin",
+    });
+  } catch (error) {
+    return res.status(400).json({
+      status: "fail",
+      error: error.errors[0].message,
+    });
+  }
+};
+
+
+exports.deleteBook = async (req, res) => {
+    try {
+      const book = await Book.findOne({ where: { id: req.params.id } });
+      if (!book) {
+        return res.status(404).json({
+          status: "fail",
+          message: "No book found with that ID",
+        });
+      }
+  
+      // console.log(req.user);
+  
+      if (req.user.role == "admin") {
+        await book.destroy();
+        return res.status(204).json({
+          status: "success",
+          data: null,
+        });
+      }
+  
+      return res.status(400).json({
+        status: "fail",
+        message: "Can not delete book because the user is not admin",
+      });
+    } catch (error) {
+      return res.status(400).json({
+        status: "fail",
+        error: error.errors[0].message,
+      });
+    }
+};
+
+
+// Find books by genre
+exports.getBooksByGenre = async (req, res) => {
+  try {
+    const {genre} = req.query; 
+    // pass genre as a query parameter
+
+    // Find the genre based on its name
+    const selectedGenre = await Genre.findOne({ where: { name: genre } });
+
+    if (!selectedGenre) {
+      return res.status(404).json({
+        status: 'error',
+        message: 'Genre not found',
+      });
+    }
+
+    // Find books associated with the selected genre
+    const books = await Book.findAll({
+      include: [
+        {
+          model: Genre,
+          through: {
+            model: BookGenre,
+            where: { genre_id: selectedGenre.id }, // Use the ID of the selected genre
+          },
+          where: { name: genre }, // Filter by genre name
+        },
+      ],
+    });
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        books,
+      },
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      status: 'error',
+      message: 'Unable to fetch books by genre',
+    });
+  }
+};
