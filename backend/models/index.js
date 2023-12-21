@@ -72,6 +72,6 @@ db.Genre.hasMany(db.BookGenre, {
   foreignKey: "genre_id",
 });
 
-db.sequelize.sync({force: true});
+db.sequelize.sync();
 
 module.exports = db;

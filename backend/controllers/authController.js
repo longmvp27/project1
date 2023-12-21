@@ -1,7 +1,8 @@
 const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
+// const bcrypt = require("bcrypt");
 const { promisify } = require("util");
 const { User, Book, Sale, SaleDetail, BookGenre, Genre } = require("../models/index");
+const { compare } = require("bcrypt");
 
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -19,7 +20,8 @@ exports.signup = async (req, res) => {
       });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 12);
+    // const hashedPassword = await bcrypt.hash(password, 12);
+    const hashedPassword = password;
 
     const newUser = await User.create({
       ...req.body,
@@ -37,7 +39,7 @@ exports.signup = async (req, res) => {
   } catch (error) {
     return res.status(400).json({
       status: "fail",
-      message: error.errors[0].message,
+      message: error,
     });
   }
 };
@@ -56,7 +58,8 @@ exports.login = async (req, res) => {
       where: { gmail },
     });
     // console.log(user.username, user.password);
-    const correct = await bcrypt.compare(password, user.password);
+    // const correct = await bcrypt.compare(password, user.password);
+    const correct = compare(password, user.password)
 
     if (!user || !correct) {
       return res.status(401).json({
