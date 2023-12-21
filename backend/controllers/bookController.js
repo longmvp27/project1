@@ -2,6 +2,8 @@ const {
     Genre,
     Book,
     BookGenre,
+    Sale,
+    SaleDetail,
     User,
     sequelize,
     QueryTypes,
@@ -117,9 +119,8 @@ exports.deleteBook = async (req, res) => {
 // Find books by genre
 exports.getBooksByGenre = async (req, res) => {
   try {
-    const {genre} = req.query; 
-    // pass genre as a query parameter
-
+    const {genre} = req.query; // pass genre as a query parameter
+    
     // Find the genre based on its name
     const selectedGenre = await Genre.findOne({ where: { name: genre } });
 
@@ -155,6 +156,48 @@ exports.getBooksByGenre = async (req, res) => {
     res.status(500).json({
       status: 'error',
       message: 'Unable to fetch books by genre',
+    });
+  }
+};
+
+
+exports.getBestsellerBooks = async (req, res) => {
+  try {
+    const bestsellingBooks = await SaleDetail.findAll({
+      attributes: [
+        'book_id',
+        [sequelize.fn('SUM', sequelize.col('quantity')), 'total'],
+      ],
+      include: [
+        {
+          model: Sale,
+          where: { status: true }, // Filter sales where status is true
+        },
+      ],
+      group: ['book_id'],
+      order: [[sequelize.literal('total'), 'DESC']],
+      limit: 10, // Adjust this limit as needed
+    });
+
+    const bookIds = bestsellingBooks.map((item) => item.book_id);
+
+    const bestsellers = await Book.findAll({
+      where: {
+        id: bookIds,
+      },
+    });
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        bestsellers,
+      },
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      status: 'error',
+      message: 'Unable to fetch bestseller books',
     });
   }
 };

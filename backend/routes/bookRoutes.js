@@ -6,6 +6,8 @@ const router = express.Router();
 
 router.get("/", bookController.getAllBooks);
 
+router.get("/bestsellers", bookController.getBestsellerBooks);
+
 router.post(
     "/",
     authController.protect,
@@ -20,11 +22,17 @@ router.delete(
     bookController.deleteBook
 );
 
+
 router.patch(
     "/:id",
     authController.protect,
     authController.restrictTo("admin"),
     bookController.updateBook
 );
+
+
+router.get("/genre", bookController.getBooksByGenre);
+
+
 
 module.exports = router;
