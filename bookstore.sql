@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 21, 2023 at 08:16 AM
+-- Generation Time: Dec 22, 2023 at 09:51 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -49,8 +49,7 @@ INSERT INTO `bookgenres` (`id`, `book_id`, `genre_id`) VALUES
 (9, 9, 5),
 (10, 10, 2),
 (11, 11, 1),
-(12, 12, 4),
-(13, 13, 2);
+(12, 12, 4);
 
 -- --------------------------------------------------------
 
@@ -83,7 +82,7 @@ INSERT INTO `books` (`id`, `title`, `author`, `price`, `image`) VALUES
 (10, 'Let It Come Down', 'Conners Peter', 180000, 'https://m.media-amazon.com/images/I/81OBVqzun9L._AC_UF894,1000_QL80_.jpg'),
 (11, 'Stories of Paul Bowles', 'Cook Bruce', 170000, 'https://m.media-amazon.com/images/I/61I7IH8sryL._AC_UF1000,1000_QL80_.jpg'),
 (12, 'Paris By Night', 'Coolidge Clark', 290000, 'https://pictures.abebooks.com/inventory/md/md31335414127.jpg'),
-(13, 'Python', 'BaoAnh', 234000, 'https://i5.walmartimages.com/asr/fa9574f2-2d73-43ba-b3c5-9e0ad2cffe5d_1.41d85ba8dc65323c6cd0d0485dfdb406.jpeg');
+(14, 'Sacred Band: A Litany Of Ingratitude', 'Christopher Tom', 180000, 'https://m.media-amazon.com/images/I/81T3dFGRkpL._AC_UF1000,1000_QL80_.jpg');
 
 -- --------------------------------------------------------
 
@@ -120,6 +119,79 @@ CREATE TABLE `saledetails` (
   `quantity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `saledetails`
+--
+
+INSERT INTO `saledetails` (`id`, `sale_id`, `book_id`, `quantity`) VALUES
+(13, 3, 1, 1);
+
+--
+-- Triggers `saledetails`
+--
+DELIMITER $$
+CREATE TRIGGER `calculate_sum_total` AFTER INSERT ON `saledetails` FOR EACH ROW BEGIN
+    DECLARE total FLOAT;
+
+    -- Calculate the total sum for the sale_id from saledetails
+    SELECT SUM(b.price * sd.quantity)
+    INTO total
+    FROM saledetails sd
+    JOIN books b ON sd.book_id = b.id
+    WHERE sd.sale_id = NEW.sale_id;
+
+    -- Update the sum_total in the sales table
+    UPDATE sales
+    SET sum_total = total
+    WHERE id = NEW.sale_id;
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `update_sum_total_on_delete` AFTER DELETE ON `saledetails` FOR EACH ROW BEGIN
+    DECLARE total FLOAT;
+
+    -- Calculate the total sum for the sale_id from saledetails
+    SELECT SUM(b.price * sd.quantity)
+    INTO total
+    FROM saledetails sd
+    JOIN books b ON sd.book_id = b.id
+    WHERE sd.sale_id = OLD.sale_id;
+
+    IF total IS NULL THEN
+        SET total = 0;
+    END IF;
+
+    -- Update the sum_total in the sales table
+    UPDATE sales
+    SET sum_total = total
+    WHERE id = OLD.sale_id;
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `update_sum_total_on_update` AFTER UPDATE ON `saledetails` FOR EACH ROW BEGIN
+    DECLARE total FLOAT;
+
+    -- Calculate the total sum for the sale_id from saledetails
+    SELECT SUM(b.price * sd.quantity)
+    INTO total
+    FROM saledetails sd
+    JOIN books b ON sd.book_id = b.id
+    WHERE sd.sale_id = NEW.sale_id;
+
+    IF total IS NULL THEN
+        SET total = 0;
+    END IF;
+
+    -- Update the sum_total in the sales table
+    UPDATE sales
+    SET sum_total = total
+    WHERE id = NEW.sale_id;
+END
+$$
+DELIMITER ;
+
 -- --------------------------------------------------------
 
 --
@@ -134,6 +206,24 @@ CREATE TABLE `sales` (
   `status` tinyint(1) NOT NULL DEFAULT 0,
   `date` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `sales`
+--
+
+INSERT INTO `sales` (`id`, `user_id`, `shipping_method`, `sum_total`, `status`, `date`) VALUES
+(3, 3, 'in_store', 170000, 1, '0000-00-00 00:00:00');
+
+--
+-- Triggers `sales`
+--
+DELIMITER $$
+CREATE TRIGGER `delete_related_saleDetails` AFTER DELETE ON `sales` FOR EACH ROW BEGIN
+    DELETE FROM saledetails
+    WHERE sale_id = OLD.id;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -220,7 +310,7 @@ ALTER TABLE `bookgenres`
 -- AUTO_INCREMENT for table `books`
 --
 ALTER TABLE `books`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `genres`
@@ -232,13 +322,13 @@ ALTER TABLE `genres`
 -- AUTO_INCREMENT for table `saledetails`
 --
 ALTER TABLE `saledetails`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `sales`
 --
 ALTER TABLE `sales`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `users`
