@@ -9,6 +9,7 @@ const genreRouter = require("./routes/genreRoutes");
 const saleRouter = require("./routes/saleRoutes");
 
 
+
 dotenv.config({
   path: "./config.env",
 });
@@ -24,6 +25,7 @@ app.use("/users", userRouter);
 app.use("/books", bookRouter);
 app.use("/genres", genreRouter);
 app.use("/sales", saleRouter);
+
 
 
 app.all("*", (req, res, next) => {

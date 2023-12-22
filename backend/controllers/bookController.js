@@ -103,44 +103,60 @@ exports.deleteBook = async (req, res) => {
 
 
 // Find books by genre
-exports.getBooksByGenre = async (req, res) => {
+exports.getBooksByGenreOrTitle = async (req, res) => {
   try {
-    const {genre} = req.query; // pass genre as a query parameter
+    let {query} = req.query; // pass genre as a query parameter
     
     // Find the genre based on its name
-    const selectedGenre = await Genre.findOne({ where: { name: genre } });
 
-    if (!selectedGenre) {
-      return res.status(404).json({
-        status: 'error',
-        message: 'Genre not found',
-      });
-    }
+    const selectedGenre = await Genre.findOne({ where: { name: query } });
 
-    // Find bookGenre 
-    const selectedBookGenres = await BookGenre.findAll({ where: { genre_id: selectedGenre.id } });
-    const bookIds = selectedBookGenres.map(bookGenre => bookGenre.book_id);
+    let booksByGenre = [];
 
-    // Find books associated with the selected genre
+    if (selectedGenre) {
+      // Find bookGenre 
+        const selectedBookByGenres = await BookGenre.findAll({ where: { genre_id: selectedGenre.id } });
+          
+        const bookIdsByGenre = selectedBookByGenres.map(bookGenre => bookGenre.book_id);
+        
+        // Find books associated with the selected genre
+        booksByGenre = await Book.findAll({
+          where: { id: bookIdsByGenre }    
+        });
+    } else {
+      booksByGenre = [];
+    }    
 
-    const books = await Book.findAll({
-      where: { id: bookIds }    
+    query = query.toLowerCase();
+    const booksByTitle = await Book.findAll({
+      where: {
+        // Use Op.iLike for case-insensitive search
+        title: {
+          [Op.like]: `%${query}%`, // Search for the query string in the book title
+        },
+      },
     });
+
+    console.log(booksByTitle);
+
   
-    res.status(200).json({
+    return res.status(200).json({
       status: 'success',
+      results: booksByGenre.length + booksByTitle.length,
       data: {
-        books,
+        booksByTitle,
+        booksByGenre,
       },
     });
   } catch (err) {
     console.error(err);
     res.status(500).json({
       status: 'error',
-      message: 'Unable to fetch books by genre',
+      message: 'Unable to fetch books by either genre or title',
     });
   }
 };
+
 
 // See bestseller books
 exports.getBestsellerBooks = async (req, res) => {
@@ -169,7 +185,7 @@ exports.getBestsellerBooks = async (req, res) => {
       },
     });
 
-    res.status(200).json({
+    return res.status(200).json({
       status: 'success',
       data: {
         bestsellers,

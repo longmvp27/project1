@@ -30,7 +30,7 @@ router.patch(
     bookController.updateBook
 );
 
-router.get("/genre", bookController.getBooksByGenre);
+router.get("/search", bookController.getBooksByGenreOrTitle);
 
 
 
