@@ -20,11 +20,18 @@ module.exports = (sequelize, DataTypes, Model) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
+      quantity: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },      
       image: {
         type: DataTypes.STRING,
         allowNull: false,
-      }
-      
+      },
+      description: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      }      
     },
     {
       // Other model options go here

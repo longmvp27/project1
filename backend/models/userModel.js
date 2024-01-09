@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes, Model) => {
         type: DataTypes.STRING(255),
         allowNull: false,
       },
-      gmail: {
+      email: {
         type: DataTypes.STRING(255),
         allowNull: false,
         unique: true,
