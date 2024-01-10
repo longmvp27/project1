@@ -175,7 +175,6 @@ const BookData = ({ id, imgSrc, name, author, price, description, addToCart, car
     }
     const handleAddToCart = () => {
         addToCart({ id, imgSrc, name, author, price });
-        setShowAlert(true); // Show the alert when the book is added to the cart
         
     };
 
