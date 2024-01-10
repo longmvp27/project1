@@ -1,24 +1,25 @@
-import logo from './logo.svg';
 import './App.css';
+import MainGUI from './Components/MainGUI/MainGUI';
+import Login from './Components/LoginSignup/Login';
+import Signup from './Components/LoginSignup/Signup';
+import Books from './Components/Books/Books';
+import Shipping from './Shipping/Shipping';
+import SpecificBookPage from './Components/Books/SpecificBookPage';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route exact path="/" element={<MainGUI />} />
+        <Route exact path="/books" element={<Books/>} />
+        <Route exact path="/login" element={<Login />} />
+        <Route exact path="/signup" element={<Signup />} />
+        <Route exact path="/shipping" element={<Shipping />} />
+        <Route path='/SpecificBookPage/:id' element={<SpecificBookPage />} />
+      </Routes>
+    </Router>
   );
 }
 
