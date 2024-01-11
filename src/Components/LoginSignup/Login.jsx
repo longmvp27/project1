@@ -55,7 +55,7 @@ const LoginSignup = () => {
                     </div>
                 </div>        
                 <div className="submit-container">
-                    <div className='submit' onClick={validateLogIn}>Login</div>
+                    <button className='submit' onClick={validateLogIn}>Login</button>
                 </div>
 
             </div>

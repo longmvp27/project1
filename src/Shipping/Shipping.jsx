@@ -7,19 +7,26 @@ const Shipping = () => {
   const navigate = useNavigate();
   const cartItems = location.state?.cartItems || [];
   const total = location.state?.total;
+  const name = document.getElementById('fullName');
+  const address = document.getElementById('address');
+  const phoneNumber = document.getElementById('phoneNumber');
   
   const totalQuantity = cartItems.reduce((total, currentItem) => {
     return total + currentItem.quantity;
   }, 0);
   const handleOrder = async () => {
-    const userId = location.state?.userId;
+    if(name.value === '' || address.value === '' || phoneNumber.value === '') {
+      alert('Please fill in completely before ordering!');
+      return;
+    }
     try {
+      const userId = location.state?.userId;
       const response = await fetch('api/order', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({userId, total}),
+        body: JSON.stringify({userId, total, }),
       });
       if (response.ok) {
         alert('Ordered successfully!');

@@ -61,7 +61,7 @@ const Signup = () => {
                 </div>    
                 <div className='having-account'>Already have an account? <button className='log-in'><Link to="/Login" style={{textDecoration:'none', color: 'rgb(234, 157, 14)'}}>Log in</Link></button></div>    
                 <div className="submit-container">
-                    <div className='submit' onClick={validateSignUp}>Sign up</div>
+                    <button className='submit' onClick={validateSignUp}>Sign up</button>
                 </div>
 
             </div>
