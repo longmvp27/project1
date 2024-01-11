@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './Shipping.css';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -7,9 +7,9 @@ const Shipping = () => {
   const navigate = useNavigate();
   const cartItems = location.state?.cartItems || [];
   const total = location.state?.total;
-  const name = document.getElementById('fullName');
-  const address = document.getElementById('address');
-  const phoneNumber = document.getElementById('phoneNumber');
+  const [name, setName] = useState('');
+  const [address, setAddress] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
   
   const totalQuantity = cartItems.reduce((total, currentItem) => {
     return total + currentItem.quantity;
@@ -45,11 +45,11 @@ const Shipping = () => {
         <h2 className='title'>Shipping information</h2>
         <form action="" className='shipping-information'>
           <label htmlFor="fullName">Enter your full name: </label>
-          <input type="text" id='fullName' placeholder='Your full name' />
+          <input type="text" id='fullName' placeholder='Your full name' value={name} onChange={(e) => setName(e.target.value)}/>
           <label htmlFor="address">Enter your address: </label>
-          <textarea name="address" id="address" placeholder='Your address'></textarea>
+          <textarea name="address" id="address" placeholder='Your address' value={address} onChange={(e) => setAddress(e.target.value)}></textarea>
           <label htmlFor="phoneNumber">Enter you phone number:</label>
-          <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="Your phone number" />
+          <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="Your phone number" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)}/>
         </form>
         <button className='order-button' onClick={handleOrder}>Order</button>
       </div>

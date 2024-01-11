@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
+import Alert from '../Alert/Alert';
 const BookData = ({ id, imgSrc, name, author, price, description, addToCart, cartItems, total}) => {
     const booksData = [
         {
@@ -169,17 +170,22 @@ const BookData = ({ id, imgSrc, name, author, price, description, addToCart, car
         }
       ];
     const navigate = useNavigate();
+    const [showAlert, setShowAlert] = useState(false);
 
     const handleViewSpecific = () => {
         navigate(`/SpecificBookPage/${id}`, {state: {booksData: booksData, cartItems: cartItems}})
     }
     const handleAddToCart = () => {
         addToCart({ id, imgSrc, name, author, price });
-        
+        // setShowAlert(true);
+        // setTimeout(() => {
+        //   setShowAlert(false);
+        // }, 2000);
     };
 
     return (
         <div className='bookSection'>
+            
             <img src={imgSrc} alt="" className='bookImg' onClick={handleViewSpecific}/>
             <p className='bookName'>{name}</p>
             <p className='bookAuthor'>{author}</p>

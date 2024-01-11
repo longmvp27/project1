@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './Signup.css'
 import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
@@ -6,12 +6,12 @@ import user_icon from '../Assets/person.png'
 import email_icon from '../Assets/email.png'
 import password_icon from '../Assets/password.png'
 const Signup = () => {
-    const name = document.getElementsByClassName('name-input')[0];
-    const email = document.getElementsByClassName('email-input')[0];
-    const password = document.getElementsByClassName('password-input')[0];
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const navigate = useNavigate();
     const validateSignUp = async () => {
-        if(name.value === '' || email.value === '' || password.value === '') {
+        if(name === '' || email === '' || password === '') {
             alert("Please fill in completely !");
             return;
         }
@@ -47,15 +47,15 @@ const Signup = () => {
                     <div>
                         <div className="input">
                             <img src={user_icon} alt="" />
-                            <input type="text" placeholder='Name' className='name-input'/>
+                            <input type="text" placeholder='Name' className='name-input' value={name} onChange={(e) => setName(e.target.value)}/>
                         </div>
                         <div className="input">
                             <img src={email_icon} alt="" />
-                            <input type="email" placeholder='Email' className='email-input'/>
+                            <input type="email" placeholder='Email' className='email-input' value={email} onChange={(e) => setEmail(e.target.value)}/>
                         </div>
                             <div className="input">
                             <img src={password_icon} alt="" />
-                            <input type="password" placeholder='Password' className='password-input'/>
+                            <input type="password" placeholder='Password' className='password-input' value={password} onChange={(e) => setPassword(e.target.value)}/>
                         </div>
                     </div>
                 </div>    
