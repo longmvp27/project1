@@ -26,7 +26,7 @@ const Shipping = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({userId, total, }),
+        body: JSON.stringify({userId: userId, total: total, name: name, address: address, phoneNumber: phoneNumber}),
       });
       if (response.ok) {
         alert('Ordered successfully!');

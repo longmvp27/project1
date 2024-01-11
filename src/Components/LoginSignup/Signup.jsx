@@ -21,7 +21,7 @@ const Signup = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({name: name.value, email: email.value, password: password.value}),
+                body: JSON.stringify({name: name, email: email, password: password}),
             });
             if(response.ok) {
                 alert('Sign up successfully!');
