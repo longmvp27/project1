@@ -4,10 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
-const ShoppingCart = ({ cartItems, addToCart, removeFromCart, closeCart , updateQuantity, total}) => {
+const ShoppingCart = ({ cartItems, addToCart, removeFromCart, closeCart , updateQuantity, total, userId}) => {
   const navigate = useNavigate();
   const handleCheckOut = () => {
-    navigate('/Shipping', {state: {cartItems, total}})
+    navigate('/Shipping', {state: {cartItems, total, userId}})
   };
   return (
     <div className='shopping-cart'>

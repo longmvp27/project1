@@ -1,6 +1,6 @@
 import React, {useState, useRef, useEffect} from 'react'
 import './Books.css'
-import { Link , Navigate, useNavigate} from 'react-router-dom'
+import { Link , Navigate, useLocation, useNavigate} from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch} from '@fortawesome/free-solid-svg-icons';
 import cart_icon from '../Assets/cart.png'
@@ -153,6 +153,8 @@ const Books = () => {
     const [cartItems, setCartItems] = useState([]);
     const [cartVisible, setCartVisible] = useState(false);
     const [searchQuery, setSearchQuery] = useState(''); // State to store search query
+    const location = useLocation();
+    const userId = location.state?.userId;
     const booksRef = useRef(null);
 
     const updateCartItemsToLocalStorage = (updatedCartItems) => {
@@ -271,7 +273,7 @@ const Books = () => {
                     addToCart={addToCart}
                     cartItems={cartItems}
                     total={total}
-              
+                    userId={userId}
                 />
             ))}
             
