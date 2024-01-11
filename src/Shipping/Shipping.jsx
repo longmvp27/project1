@@ -15,7 +15,7 @@ const Shipping = () => {
     return total + currentItem.quantity;
   }, 0);
   const handleOrder = async () => {
-    if(name.value === '' || address.value === '' || phoneNumber.value === '') {
+    if(name === '' || address === '' || phoneNumber === '') {
       alert('Please fill in completely before ordering!');
       return;
     }
