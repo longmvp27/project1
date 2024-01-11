@@ -1,16 +1,37 @@
 import React from 'react'
 import './Shipping.css';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const Shipping = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const cartItems = location.state?.cartItems || [];
   const total = location.state?.total;
   
   const totalQuantity = cartItems.reduce((total, currentItem) => {
     return total + currentItem.quantity;
   }, 0);
-
+  const handleOrder = async () => {
+    const userId = location.state?.userId;
+    try {
+      const response = await fetch('api/order', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({userId, total}),
+      });
+      if (response.ok) {
+        alert('Ordered successfully!');
+        navigate('/Books');
+      } else {
+        alert('Failed to order. Please try again.');
+      }
+    } catch (error) {
+      console.log("Error in ordering: ", error);
+      alert('Please try again later!');
+    }
+  }
   return (
     <div className='shipping-container'>
       <div className='contact-information'>
@@ -23,7 +44,7 @@ const Shipping = () => {
           <label htmlFor="phoneNumber">Enter you phone number:</label>
           <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="Your phone number" />
         </form>
-        <button className='order-button'>Order</button>
+        <button className='order-button' onClick={handleOrder}>Order</button>
       </div>
       <div className='order-summary'>
         <h2 className='title'>Order summary</h2>

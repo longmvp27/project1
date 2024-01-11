@@ -1,17 +1,38 @@
 import React, {useState} from 'react'
+import { useNavigate } from 'react-router-dom';
 import './Login.css';
 import email_icon from '../Assets/email.png'
 import password_icon from '../Assets/password.png'
 const LoginSignup = () => {  
-    const email = document.getElementsByClassName('email-input');
-    const password = document.getElementsByClassName('password-input');
-    const validateLogIn = () => {
-        if(email === null || password === null) {
-            alert("Please enter both email and password")
+    const email = document.getElementsByClassName('email-input')[0];
+    const password = document.getElementsByClassName('password-input')[0];
+    const navigate = useNavigate();
+    const validateLogIn = async () => {
+        if(email.value === '' || password.value === '') {
+            alert("Please fill in both email and password");
+            return;
         }
-    }
-
-
+        try {
+            const response = await fetch('api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({email: email.value, password: password.value}),
+            });
+            if(response.ok) {
+                alert('Login successful!');
+                const userData = await response.json();
+                const userId = userData.userId;
+                navigate('/Books', {state: {userId: userId}});
+            } else {
+                alert('Login failed. Please check your email or password!');
+            }
+        } catch (error) {
+            console.log('Error in login: ', error);
+            alert('Please try again later!')
+        }
+    };
     return (
         <div className='BackgroundImg'>
             <div className="container">
