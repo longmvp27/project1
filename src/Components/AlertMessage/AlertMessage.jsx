@@ -2,7 +2,6 @@ import React from 'react'
 import './AlertMessage.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck, faCircleCheck } from '@fortawesome/free-solid-svg-icons'
-import { green } from '@material-ui/core/colors'
 const AlertMessage = () => {
   return (
     <div className='alert-container'>
