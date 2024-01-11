@@ -236,6 +236,11 @@ const Books = () => {
         setCartVisible(!cartVisible);
     };
     console.log(setCartItems);
+    //Function to empty cartItems after press Logout
+    const handleLogOut = () => {
+      localStorage.removeItem('cartItems');
+      setCartItems([]);
+    }
   return (
     <div className='BookContainer'>
         <div className='Header'>
@@ -243,7 +248,7 @@ const Books = () => {
             <ul className='nav'>
                 <li><Link to="/">Home</Link></li>
                 <li><Link to="/books">Books</Link></li>
-                <li><Link to="/">Logout</Link></li>
+                <li><Link to="/" onClick={handleLogOut}>Logout</Link></li>
                 <li><button className='cartButton'><img src={cart_icon} alt="" className='cartIcon'onClick={toggleCartVisibility}/></button></li>
             </ul>
         </div>

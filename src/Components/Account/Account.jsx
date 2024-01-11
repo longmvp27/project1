@@ -1,6 +1,6 @@
 import React from 'react'
 
-const AdminManage = () => {
+const Account = () => {
   return (
     <div>
       
@@ -8,4 +8,4 @@ const AdminManage = () => {
   )
 }
 
-export default AdminManage
+export default Account
