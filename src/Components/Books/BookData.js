@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
-import Alert from '../Alert/Alert';
+import AlertMessage from '../AlertMessage/AlertMessage';
 const BookData = ({ id, imgSrc, name, author, price, description, addToCart, cartItems, total}) => {
     const booksData = [
         {
@@ -177,15 +177,15 @@ const BookData = ({ id, imgSrc, name, author, price, description, addToCart, car
     }
     const handleAddToCart = () => {
         addToCart({ id, imgSrc, name, author, price });
-        // setShowAlert(true);
-        // setTimeout(() => {
-        //   setShowAlert(false);
-        // }, 2000);
+        setShowAlert(true);
+        setTimeout(() => {
+           setShowAlert(false);
+        }, 2000);
     };
 
     return (
         <div className='bookSection'>
-            
+            {showAlert && <AlertMessage/>}
             <img src={imgSrc} alt="" className='bookImg' onClick={handleViewSpecific}/>
             <p className='bookName'>{name}</p>
             <p className='bookAuthor'>{author}</p>

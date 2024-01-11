@@ -7,12 +7,14 @@ import { useState, useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons'
 import ShoppingCart from '../ShoppingCart/ShoppingCart'
+import AlertMessage from '../AlertMessage/AlertMessage'
 const SpecificBookPage = () => {
   const {id} = useParams();
   const location = useLocation();
   const booksData = location.state?.booksData;
   const cartItemsFromBook = location.state?.cartItems;
   const [cartItems, setCartItems] = useState(cartItemsFromBook);
+  const [showAlert, setShowAlert] = useState(false);
 
   const book = booksData.find((item) => item.id === parseInt(id));
   const [cartVisible, setCartVisible] = useState(false);
@@ -50,6 +52,10 @@ const SpecificBookPage = () => {
    const handleAddToCart = () => {
      addToCart({bookId, imgSrc, name, author, price});
      localStorage.setItem('cartItems', JSON.stringify([...cartItems, { bookId, imgSrc, name, author, price, quantity: 1 }]));
+     setShowAlert(true);
+        setTimeout(() => {
+           setShowAlert(false);
+      }, 2000);
 
    }
 
@@ -82,6 +88,7 @@ const SpecificBookPage = () => {
   const total = Math.floor(calculateTotalPrice());
   return (
     <div>
+      {showAlert && <AlertMessage/>}
         <div className='Header'>
             <div className='brandName'>Bookstore <span className='spanBrandname'>ABC</span></div>
             <ul className='nav'>
@@ -93,6 +100,7 @@ const SpecificBookPage = () => {
         </div>
         
         <div className='book-detail-info'>
+        
           <img src={book.imgSrc} alt="" />
           <div className='book-details'>
             <h2>{book.name}</h2>
