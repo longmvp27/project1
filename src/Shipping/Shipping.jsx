@@ -34,7 +34,7 @@ const Shipping = () => {
         alert('Ordered successfully!'); 
         const saleData = await response.json();
         console.log(saleData);
-        sale_id = saleData.data.id;
+        sale_id = saleData.data.new_sale.id;
         navigate('/Books');
       } else {
         alert('Failed to order. Please try again.');
