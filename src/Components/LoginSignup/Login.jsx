@@ -26,7 +26,7 @@ const LoginSignup = () => {
                 const userId = userData.data.current.currentUser.id;
                 const name = userData.data.current.currentUser.name;
                 const address = userData.data.current.currentUser.address;
-                const phoneNumber = userData.data.current.currentUser.address;
+                const phoneNumber = userData.data.current.currentUser.phone;
                 console.log(userData);
                 console.log(name);
                 console.log(address);

@@ -6,6 +6,7 @@ import Books from './Components/Books/Books';
 import Shipping from './Shipping/Shipping';
 import SpecificBookPage from './Components/Books/SpecificBookPage';
 import Account from './Components/Account/Account';
+import Password from './Components/Password/Password';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 
@@ -20,6 +21,8 @@ function App() {
         <Route exact path="/shipping" element={<Shipping />} />
         <Route path='/SpecificBookPage/:id' element={<SpecificBookPage />} />
         <Route path='/account' element={<Account />} />
+        <Route path='/password' element={<Password />}/>
+
       </Routes>
     </Router>
   );

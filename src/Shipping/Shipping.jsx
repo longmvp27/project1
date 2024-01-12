@@ -10,7 +10,7 @@ const Shipping = () => {
   const [name, setName] = useState('');
   const [address, setAddress] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
-  const sale_id = null;
+  var sale_id = null
   const totalQuantity = cartItems.reduce((total, currentItem) => {
     return total + currentItem.quantity;
   }, 0);
@@ -62,6 +62,7 @@ const Shipping = () => {
       alert('Please try again later!');
     }
   }
+  console.log(cartItems)
   return (
     <div className='shipping-container'>
       <div className='contact-information'>

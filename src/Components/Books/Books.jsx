@@ -256,9 +256,9 @@ const Books = () => {
         <div className='Header'>
             <div className='brandName'>Bookstore <span className='spanBrandname'>ABC</span></div>
             <ul className='nav'>
-                <li><Link to="/">Home</Link></li>
+                {/* <li><Link to="/">Home</Link></li> */}
                 <li><Link to="/books">Books</Link></li>
-                <li><Link to="/account">Account</Link></li>
+                <li><Link to="/account" onClick={handleAccount}>Account</Link></li>
                 <li><Link to="/" onClick={handleLogOut}>Logout</Link></li>
                 <li><button className='cartButton'><img src={cart_icon} alt="" className='cartIcon'onClick={toggleCartVisibility}/></button></li>
             </ul>
