@@ -23,8 +23,16 @@ const LoginSignup = () => {
             if(response.ok) {
                 alert('Login successful!');
                 const userData = await response.json();
-                const userId = userData.userId;
-                navigate('/Books', {state: {userId: userId}});
+                const userId = userData.data.current.currentUser.id;
+                const name = userData.data.current.currentUser.name;
+                const address = userData.data.current.currentUser.address;
+                const phoneNumber = userData.data.current.currentUser.address;
+                console.log()
+                console.log(userData);
+                console.log(name);
+                console.log(address);
+                console.log(phoneNumber);
+                navigate('/Books', {state: {userId: userId, name: name, email: email, address: address, phoneNumber: phoneNumber}});
             } else {
                 alert('Login failed. Please check your email or password!');
             }
@@ -47,7 +55,7 @@ const LoginSignup = () => {
                             <img src={email_icon} alt="" />
                             <input type="email" placeholder='Email' className='email-input' value={email} onChange={(e) => setEmail(e.target.value)}/>
                         </div>
-                            <div className="input">
+                        <div className="input">
                             <img src={password_icon} alt="" />
                             <input type="password" placeholder='Password' className='password-input' value={password} onChange={(e) => setPassword(e.target.value)}/>
                         </div>

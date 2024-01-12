@@ -10,15 +10,17 @@ const Shipping = () => {
   const [name, setName] = useState('');
   const [address, setAddress] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
-  
+  const sale_id = null;
   const totalQuantity = cartItems.reduce((total, currentItem) => {
     return total + currentItem.quantity;
   }, 0);
   const handleOrder = async () => {
+    console.log(cartItems);
     if(name === '' || address === '' || phoneNumber === '') {
       alert('Please fill in completely before ordering!');
       return;
     }
+    //Fetch to backend and receive sale_id
     try {
       const userId = location.state?.userId;
       const response = await fetch('api/order', {
@@ -26,16 +28,37 @@ const Shipping = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({userId: userId, total: total, name: name, address: address, phoneNumber: phoneNumber}),
+        body: JSON.stringify({userId: userId, total: total, address: address, phoneNumber: phoneNumber}),
       });
       if (response.ok) {
-        alert('Ordered successfully!');
+        alert('Ordered successfully!'); 
+        const saleData = await response.json();
+        console.log(saleData);
+        sale_id = saleData.data.id;
         navigate('/Books');
       } else {
         alert('Failed to order. Please try again.');
       }
     } catch (error) {
       console.log("Error in ordering: ", error);
+      alert('Please try again later!');
+    }
+    //Fetch sale_id and item to backend
+    try {
+      const response = await fetch('api/saledetails', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({bookDetails: cartItems, sale_id: sale_id}),
+      });
+      if (response.ok) {
+        console.log('Added to table sale details')
+      } else {
+        alert('Failed to add to table sale details. Please try again.');
+      }
+    } catch (error) {
+      console.log("Error in adding to table: ", error);
       alert('Please try again later!');
     }
   }

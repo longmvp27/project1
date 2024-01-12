@@ -154,7 +154,12 @@ const Books = () => {
     const [cartVisible, setCartVisible] = useState(false);
     const [searchQuery, setSearchQuery] = useState(''); // State to store search query
     const location = useLocation();
+    const navigate = useNavigate();
     const userId = location.state?.userId;
+    const name = location.state?.name;
+    const email = location.state?.email;
+    const address = location.state?.address;
+    const phoneNumber = location.state?.phoneNumber;
     const booksRef = useRef(null);
 
     const updateCartItemsToLocalStorage = (updatedCartItems) => {
@@ -243,6 +248,9 @@ const Books = () => {
       localStorage.removeItem('cartItems');
       setCartItems([]);
     }
+    const handleAccount = () => {
+      navigate('/Account', {state: {userId, name, email, address, phoneNumber}})
+    }
   return (
     <div className='BookContainer'>
         <div className='Header'>
@@ -250,6 +258,7 @@ const Books = () => {
             <ul className='nav'>
                 <li><Link to="/">Home</Link></li>
                 <li><Link to="/books">Books</Link></li>
+                <li><Link to="/account">Account</Link></li>
                 <li><Link to="/" onClick={handleLogOut}>Logout</Link></li>
                 <li><button className='cartButton'><img src={cart_icon} alt="" className='cartIcon'onClick={toggleCartVisibility}/></button></li>
             </ul>
